@@ -11,13 +11,17 @@ const Login = (props) => {
 	const [passwordIsValid, setPasswordIsValid] = useState();
 	const [formIsValid, setFormIsValid] = useState(false);
 
-  //So therefore here, we can again import useEffect and then here after our state definitions, we can call useEffect and pass this first function to it and have our array of dependencies.
 	useEffect(() => {
-    //Now, like this, this would only run once and that's when this component first is rendered.
-		setFormIsValid(
-			enteredEmail.includes("@") && enteredPassword.trim().length > 6
-		);
-    //So we have setFormIsValid, enteredEmail and enteredPassword. These are our three things we're using here. So therefore, here, between these brackets, you would add, setFormIsValid, enteredEmail and enteredPassword, just like this. Important for setFormIsValid, you of course don't execute it, that would add the result of this function execution as a dependency, but instead you added like this to add a pointer at this function so that you essentially add the function itself as a dependency.
+    const identifier = setTimeout(() => {
+      setFormIsValid(
+        enteredEmail.includes("@") && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    };
   }, [setFormIsValid, enteredEmail, enteredPassword]);
 
 	const emailChangeHandler = (event) => {
